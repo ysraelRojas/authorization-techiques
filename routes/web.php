@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Symfony\Component\HttpFoundation\Response;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,8 +18,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::view('/admin', '/admin/dashboard')->name('admin_dashboard');
+Route::get('/admin', function () {
 
-Route::get('/home/change', 'HomeController@change_password')->name('change_password');
+	return view('/admin/dashboard');
+	
+})->name('admin_dashboard')->middleware(['auth', 'admin']);
+
+Route::get('/home/change', 'HomeController@change_password')->name('change_password')->middleware('auth');
