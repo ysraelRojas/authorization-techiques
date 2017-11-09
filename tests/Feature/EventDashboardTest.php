@@ -13,11 +13,7 @@ class EventDashboardTest extends TestCase
     /** @test */
     function admins_can_visit_the_admin_dashboard_events()
     {
-    	$admin = factory(User::class)->create([
-    		'admin' => true
-    	]);
-
-    	$this->actingAs($admin)
+    	$this->actingAs($this->createAdmin())
     		 ->get(route('admin_events'))
     		 ->assertStatus(200)
     		 ->AssertSee('Admin Events');
@@ -26,11 +22,7 @@ class EventDashboardTest extends TestCase
     /** @test */
     function non_admin_users_cannot_visit_the_admin_dashboard_events()
     {
-    	$user = factory(User::class)->create([
-    		'admin' => false
-    	]);
-
-    	$this->actingAs($user)
+    	$this->actingAs($this->createUser())
     		 ->get(route('admin_events'))
     		 ->assertStatus(403);
     	

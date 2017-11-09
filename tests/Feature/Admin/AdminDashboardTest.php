@@ -13,11 +13,9 @@ class AdminDashboardTest extends TestCase
     /** @test */
     function admins_can_visit_the_admin_dashboard()
     {
-    	$admin = factory(User::class)->create([
-    		'admin' => true
-    	]);
+        $this->withoutExceptionHandling();
 
-    	$this->actingAs($admin)
+    	$this->actingAs($this->createAdmin())
     		 ->get(route('admin_dashboard'))
     		 ->assertStatus(200)
     		 ->assertSee('Admin Panel');
@@ -26,11 +24,7 @@ class AdminDashboardTest extends TestCase
     /** @test */
     function non_admin_users_cannot_visit_the_admin_dashboard()
     {
-    	$user = factory(User::class)->create([
-    		'admin' => false
-    	]);
-
-    	$this->actingAs($user)
+    	$this->actingAs($this->createUser())
     		 ->get(route('admin_dashboard'))
     		 ->assertStatus(403);
     }
@@ -40,5 +34,6 @@ class AdminDashboardTest extends TestCase
     {
     	$this->get(route('admin_dashboard'))
     		 ->assertRedirect('login');
-    }
+    }  
+
 }
