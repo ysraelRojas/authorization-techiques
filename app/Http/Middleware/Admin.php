@@ -10,7 +10,7 @@ class Admin
     
     public function handle($request, Closure $next)
     {
-        if (! auth()->user()->admin) {
+        if (! optional(auth()->user()->isAdmin())) {
             throw new AuthorizationException;            
         } 
 
